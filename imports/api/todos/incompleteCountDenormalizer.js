@@ -10,7 +10,7 @@ const incompleteCountDenormalizer = {
     const incompleteCount = Todos.find({
       listId,
       checked: false,
-    }).fetch().length;
+    }).count();
 
     Lists.update(listId, { $set: { incompleteCount } });
   },

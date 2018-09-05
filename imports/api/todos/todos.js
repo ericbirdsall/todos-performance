@@ -68,13 +68,16 @@ Todos.schema = new SimpleSchema({
 
 Todos.attachSchema(Todos.schema);
 
+if (Meteor.isServer) {
+  Todos._ensureIndex('listId');
+}
+
 // This represents the keys from Lists objects that should be published
 // to the client. If we add secret properties to List objects, don't list
 // them here to keep them private to the server.
 Todos.publicFields = {
   listId: 1,
   text: 1,
-  secondary_text: 1, // unused
   createdAt: 1,
   checked: 1,
 };

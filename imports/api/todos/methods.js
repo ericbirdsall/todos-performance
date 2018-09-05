@@ -33,15 +33,13 @@ export const markAllComplete = new ValidatedMethod({
   name: 'todos.markAllComplete',
   validate: Todos.simpleSchema().pick(['listId']).validator({ clean: true, filter: false }),
   run({ listId }) {
-    Todos.find().fetch().forEach(todo => {
-      if (todo.listId === listId) {
-        Todos.update(todo._id, {
-          $set: {
-            checked: true,
-          }
-        });
-      }
-    })
+    Todos.find({listId: listId}).forEach(todo => {
+      Todos.update(todo._id, {
+        $set: {
+          checked: true,
+        }
+      });
+    });
   },
 });
 
