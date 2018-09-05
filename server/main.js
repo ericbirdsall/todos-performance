@@ -36,13 +36,29 @@ let logToConsole = (header, logObj) => {
   console.log(`${logObj.success ? `  \x1b[32m✓\x1b[0m ` : `  \x1b[31m✗\x1b[0m `} ${logObj.message}`);
 };
 
-checkListSwitchingTime = function () {
-  let todoObserve = Analyze.getObserveCursors().find(observe => observe.collectionName === 'todos');
-  if (!todoObserve) {
+checkTodoCompletionTime = function () {
+  let updateATodo = () => {
+    let tic = new Date();
+    let todo = Todos.findOne({checked: false});
+    Todos.update(todo._id, {$set: {
+      checked: true,
+    }});
+    let toc = new Date();
+    return toc - tic;
+  }
+  let times = _.range(5).map(updateATodo);
+  let totalTime = times.reduce((a, b) => a + b, 0)
+  console.log(`time: ${totalTime}`);
+  if (totalTime > 120) {
     return {
       success: false,
-      message: `Click around the app to start some observes`,
+      message: `Todo Completion time takes a while`,
     };
+  } else {
+    return {
+      success: true,
+      message: `Todo Completion time looks good.`
+    }
   }
   let selector = todoObserve.selector;
   if (selector && selector.listId.$exists && _.size(selector.listId) === 1) {
@@ -84,7 +100,7 @@ let checkPublishedFields = () => {
 }
 
 Performance.checker = async function () {
-  logToConsole('List Switching Time', checkListSwitchingTime());
+  logToConsole('Todo Completion Time', checkTodoCompletionTime());
   logToConsole('Polling Observes', checkPollingObserves());
   logToConsole('Overpublishing', checkPublishedFields());
   logToConsole('Check Indices', await checkIndices());
@@ -97,7 +113,7 @@ Performance.Todos = Todos;
 // Check fixtures
 console.log('Loading Fixtures');
 let interval = Meteor.setInterval(() => {
-  const TOTAL_TODOS = 4000;
+  const TOTAL_TODOS = 400;
   let count = Todos.find().count();
   if (count < TOTAL_TODOS) {
     console.log(`${(count / TOTAL_TODOS * 100).toFixed(2)}% finished.`);
