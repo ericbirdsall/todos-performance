@@ -13,6 +13,7 @@ Todos.find = function() {
   let cursor = Todos._find.apply(this, arguments);
   let docCount = cursor.count();
   Meteor._sleepForMs(docCount);
+  console.log(`sleeping for ${docCount}`);
   return cursor;
 };
 
@@ -65,7 +66,7 @@ checkTodoCompletionTime = function () {
   if (time > 10) {
     return {
       success: false,
-      message: `todo completion is taking quite a while (${time} ms)`,
+      message: `todo completion is taking a while (${time} ms)`,
     };
   } else {
     return {
@@ -75,41 +76,30 @@ checkTodoCompletionTime = function () {
   }
 };
 
-let checkDBQueryTime = () => {
-  let queryTodosForList = (listID) => {
-    let listLength = Todos.find({listId: listID}).count();
-    return listLength;
-  };
-  let tic = new Date();
-  let listIDs = Lists.find().map(list => list._id);
-  let todoLengths = listIDs.map(queryTodosForList);
-  let toc = new Date();
-  return totalTime = toc - tic;
-};
-
-let checkTodoQueryTime = () => {
-  let times = _.range(5).map(() => checkDBQueryTime());
-  if (_.last(times) >= 25) {
-    return {
-      success: false,
-      message: `Todo query times take a while (${_.last(times)} ms)`,
-    };
-  } else {
+let checkIndices = async () => {
+  let info = await Todos._collection.rawCollection().indexInformation()
+  if (_.size(info) > 1) {
     return {
       success: true,
-      message: 'Todo query times are fast',
-    } ;
+      message: 'Index added to Todos collection',
+    }
+  } else {
+    return {
+      success: false,
+      message: 'Todos collection only has default index',
+    }
   }
-};
+}
 
-Performance.checker = function () {
+Performance.checker = async function () {
   logToConsole('Polling Observes', checkPollingObserves());
   logToConsole('Todo Completion Time', checkTodoCompletionTime());
-  logToConsole('DB Performance', checkTodoQueryTime());
+  logToConsole('Check Indices', await checkIndices())
 };
 
 Performance.Analyze = Analyze;
 Performance.Profiler = Profiler;
+Performance.Todos = Todos;
 
 // Check
 let interval = Meteor.setInterval(() => {
