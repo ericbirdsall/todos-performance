@@ -62,7 +62,7 @@ checkTodoCompletionTime = function () {
   let times = _.range(5).map(() => updateATodo());
   let time = _.last(times);
 
-  if (time > 10) {
+  if (time > 100) {
     return {
       success: false,
       message: `todo completion is taking a while (${time} ms)`,
