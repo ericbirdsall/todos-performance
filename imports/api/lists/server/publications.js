@@ -9,6 +9,8 @@ Meteor.publish('lists.public', function listsPublic() {
     userId: { $exists: false },
   }, {
     fields: Lists.publicFields,
+    limit: 100,
+    pollingIntervalMs: 1000,
   });
 });
 

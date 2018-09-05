@@ -91,10 +91,21 @@ let checkIndices = async () => {
   }
 }
 
+let checkPublishedFields = () => {
+  return _.size(Todos.publicFields) < 5 ? {
+    success: true,
+    message: 'Unnecessary data not published to client',
+  } : {
+    success: false,
+    message: 'Client receiving unnecessary data',
+  }
+}
+
 Performance.checker = async function () {
   logToConsole('Polling Observes', checkPollingObserves());
   logToConsole('Todo Completion Time', checkTodoCompletionTime());
-  logToConsole('Check Indices', await checkIndices())
+  logToConsole('Overpublishing', checkPublishedFields());
+  logToConsole('Check Indices', await checkIndices());
 };
 
 Performance.Analyze = Analyze;
