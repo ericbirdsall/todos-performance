@@ -13,7 +13,6 @@ Todos.find = function() {
   let cursor = Todos._find.apply(this, arguments);
   let docCount = cursor.count();
   Meteor._sleepForMs(docCount);
-  console.log(`sleeping for ${docCount}`);
   return cursor;
 };
 
