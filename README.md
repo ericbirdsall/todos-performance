@@ -8,14 +8,23 @@ application has been changed to be less performant.
 meteor npm install
 meteor
 ```
+then visit localhost:3000
 
-### Performance
-After starting the application, visit localhost:3000 and start a meteor shell (with `meteor shell`). You can then run `Performance.checker()` in the Meteor shell to see performance benchmarks to
-get started on. The following packages below, Analyze & Profiler, will be very helpful for discovering issues.
+#### Problem 1: Polling Observes
+The application contains a polling observe. Use the [qualialabs:analyze-observes](https://github.com/qualialabs/analyze-observes) package found in the Meteor shell at `Performance.Analyze` to identify the polling observe and remove it.
+
+#### Problem 2: Todo Completion Time
+Todo Completion is inefficient. Use the [qualialabs:profile](https://github.com/qualialabs/profile) package to take a server-side profile and determine what is causing latency.
+
+#### Problem 3: Overpublishing
+A large unused field is being published to the client. Use the [Meteor DevTools chrome extension](https://github.com/bakery/meteor-devtools) to identify what is being published and omit it from the list of published fields.
+
+#### Problem 4: Database Indices
+The application contains no indices on the Todos collection, and queries on Todos require a full collection scan. Add an index on the Todos collection to avoid paging the entire collection into memory when running queries.
 
 ### Helpful Commands and Tools in the Meteor Shell
-`Performance.checker()`: Runs a test suite to identify performance issues.
+`Performance.checker()`: Runs a test suite for each problem.
 
-`Performance.Analyze`: The qualia:analyze-observes package from https://github.com/qualialabs/analyze-observes
+`Performance.Analyze`: the [qualialabs:analyze-observes](https://github.com/qualialabs/analyze-observes) package
 
-`Performance.Profiler`: The qualia:profiler package from https://github.com/qualialabs/profile
+`Performance.Profiler`: the [qualialabs:profile](https://github.com/qualialabs/profile) package
