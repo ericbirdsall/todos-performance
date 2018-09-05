@@ -1,16 +1,6 @@
-[![Circle CI](https://circleci.com/gh/meteor/todos.svg?style=svg)](https://circleci.com/gh/meteor/todos)
-
-This is a Todos example app built on the principles described in the [Meteor Guide](http://guide.meteor.com/structure.html). 
-
-## Versions
-
-This version (the `master`) branch uses the [Blaze](http://guide.meteor.com/blaze.html) rendering library, with code written in ES2015 JavaScript.
-
-The [`react`](https://github.com/meteor/todos/tree/react) branch implements the same application using [React](http://guide.meteor.com/react.html)
-
-The [`coffeescript`](https://github.com/meteor/todos/tree/coffeescript) branch implements this (the Blaze) version of the app in CoffeeScript.
-
-Note that attempts will be made to keep the branches up to date but this isn't guaranteed.
+## Todos Performance
+This is the Meteor Todos example forked from https://github.com/meteor/todos. The
+application has been changed to be less performant.
 
 ### Running the app
 
@@ -19,11 +9,13 @@ meteor npm install
 meteor
 ```
 
-### Scripts
+### Performance
+After starting the application, visit localhost:3000 and start a meteor shell (with `meteor shell`). You can then run `Performance.checker()` in the Meteor shell to see performance benchmarks to
+get started on. The following packages below, Analyze & Profiler, will be very helpful for discovering issues.
 
-To lint:
+### Helpful Commands and Tools in the Meteor Shell
+`Performance.checker()`: Runs a test suite to identify performance issues.
 
-```bash
-meteor npm run lint
-```
+`Performance.Analyze`: The qualia:analyze-observes package from https://github.com/qualialabs/analyze-observes
 
+`Performance.Profiler`: The qualia:profiler package from https://github.com/qualialabs/profile
