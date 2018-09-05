@@ -6,15 +6,6 @@ import { Todos } from '/imports/api/todos/todos.js';
 import { _ } from 'meteor/underscore';
 import Profiler from "meteor/qualia:profile";
 
-// Add some latency to cursors
-// Please don't change this :)
-Todos._find = Todos.find;
-Todos.find = function() {
-  let cursor = Todos._find.apply(this, arguments);
-  let docCount = cursor.count();
-  Meteor._sleepForMs(docCount);
-  return cursor;
-};
 
 Performance = {};
 
@@ -113,7 +104,7 @@ Performance.Todos = Todos;
 
 // Check
 let interval = Meteor.setInterval(() => {
-  const TOTAL_TODOS = 800;
+  const TOTAL_TODOS = 4000;
   let count = Todos.find().count();
   if (count < TOTAL_TODOS) {
     console.log(`${(count / TOTAL_TODOS * 100).toFixed(2)}% finished.`);

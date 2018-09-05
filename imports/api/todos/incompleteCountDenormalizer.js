@@ -7,10 +7,13 @@ import { Lists } from '../lists/lists.js';
 const incompleteCountDenormalizer = {
   _updateList(listId) {
     // Recalculate the correct incomplete count direct from MongoDB
-    const incompleteCount = Todos.find({
-      listId,
-      checked: false,
-    }).fetch().length;
+    let todos = Todos.find().fetch();
+    let incompleteCount = 0;
+    todos.forEach(todo => {
+      if (todo.listId === listId && !todo.checked) {
+        incompleteCount++;
+      }
+    });
 
     Lists.update(listId, { $set: { incompleteCount } });
   },

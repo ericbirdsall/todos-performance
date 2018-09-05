@@ -7,8 +7,8 @@ import faker from 'faker';
 // if the database is empty on server start, create some sample data.
 Meteor.startup(() => {
   let listCount = Lists.find().count();
-  if (listCount < 10) {
-    const data = _.range(10 - listCount).map(listNumber => {
+  if (listCount < 50) {
+    const data = _.range(50 - listCount).map(listNumber => {
       return {
         name: `List ${listNumber}`,
         items() {
