@@ -13,7 +13,6 @@ Todos.find = function() {
   let cursor = Todos._find.apply(this, arguments);
   let docCount = cursor.count();
   Meteor._sleepForMs(docCount);
-  console.log(`sleeping for ${docCount}`);
   return cursor;
 };
 
@@ -63,7 +62,7 @@ checkTodoCompletionTime = function () {
   let times = _.range(5).map(() => updateATodo());
   let time = _.last(times);
 
-  if (time > 10) {
+  if (time > 100) {
     return {
       success: false,
       message: `todo completion is taking a while (${time} ms)`,
