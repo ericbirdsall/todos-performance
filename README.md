@@ -17,7 +17,7 @@ Be sure to wait until the fixtures have finished loading before attempting to wo
 The main files you will be working with are in `/imports/api`. There is a folder for each collection (todos and lists) containing Meteor methods (methods.js) and schema definitions (todos.js/lists.js). In the `server` folder for each collection you can find `publications.js` containing collection publications.
 
 #### Problem 1: Todo Completion Time
-Marking All Todos Complete (checkbox in the top right) is pretty slow. Use the [qualialabs:profile](https://github.com/qualialabs/profile) package to take a server-side profile and determine what is causing the slowness.
+Marking All Todos Complete (checkbox in the top right) is pretty slow. Use the [qualialabs:profile](https://github.com/qualialabs/profile) package to take a server-side profile and determine what is causing the slowness. The profiler can be found already installed in the meteor shell at `Performance.Profiler`.
 
 #### Problem 2: Polling Observes
 The application contains a polling observe. Use the [qualialabs:analyze-observes](https://github.com/qualialabs/analyze-observes) package found in the Meteor shell at `Performance.Analyze` to identify the polling observe and remove it.
